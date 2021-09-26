@@ -10,7 +10,7 @@ int main()
   cin >> el_quantity;
   assert(cin.good());
 
-  caches_lfu::CacheLFU <int> lfu{cache_size};
+  caches_lfu::CacheLFU lfu{cache_size};
   hits = lfu.finding_hits(el_quantity);
   cout << hits << endl;
 
