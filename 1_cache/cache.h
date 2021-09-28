@@ -31,6 +31,12 @@ namespace caches_lfu
     public:
       CacheLFU(size_t size) : size_(size), hits_(0) {}
 
+      int get_hits()
+      { return hits_;}
+
+      int set_hits()
+      { return (++hits_); }
+
       void delete_min_freq()
       {
         FreqT min_freq = std::numeric_limits<FreqT>::max();
@@ -43,9 +49,9 @@ namespace caches_lfu
 
           if (find_res->second < min_freq)
           {
-          min_freq = find_res->second;
-          min_it = find_res;
-          min_it_list = curr_list;
+            min_freq = find_res->second;
+            min_it = find_res;
+            min_it_list = curr_list;
           }
         } 
         cache_.erase(min_it->first);
@@ -79,9 +85,24 @@ namespace caches_lfu
           assert(cin.good());
 
           if (put_new(new_key) == true)
-            hits_ += 1;
+            set_hits();
         }
         return hits_;
       }     
   };
+  
+  int finding_hits(size_t size_)
+  {
+    CacheLFU lfu{size_};
+    for (int curr = 0; curr < size_; ++curr) 
+    {
+      int new_key;
+      cin >> new_key;
+      assert(cin.good());
+
+      if (lfu.put_new(new_key) == true)
+        lfu.set_hits();
+    }
+    return lfu.get_hits();
+  }
 }
