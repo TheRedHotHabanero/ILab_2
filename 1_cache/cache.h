@@ -37,20 +37,17 @@ namespace caches_lfu
         MapIt min_it = cache_.end();
         ListIt min_it_list = list_.end();
 
-        for (MapIt curr = cache_.begin(); curr != cache_.end(); ++curr)
-        {
-          if (curr->second < min_freq) // 
-            {
-              min_freq = curr->second;
-              min_it = curr;
-            }  
-        }
-
         for (ListIt curr_list = list_.begin(); curr_list != list_.end(); ++curr_list)
         {
-          if (*curr_list == min_it->first)
-            min_it_list = curr_list;
-        }
+          MapIt find_res = cache_.find(*curr_list);
+
+          if (find_res->second < min_freq)
+          {
+          min_freq = find_res->second;
+          min_it = find_res;
+          min_it_list = curr_list;
+          }
+        } 
         cache_.erase(min_it->first);
         list_.erase(min_it_list);
       }
