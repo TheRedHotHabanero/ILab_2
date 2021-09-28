@@ -46,6 +46,7 @@ namespace caches_lfu
         for (ListIt curr_list = list_.begin(); curr_list != list_.end(); ++curr_list)
         {
           MapIt find_res = cache_.find(*curr_list);
+          assert(find_res != cache_.end());
 
           if (find_res->second < min_freq)
           {
