@@ -2,18 +2,18 @@
 
 #include "cache.h"
 
-int finding_hits(size_t size_)
+int finding_hits(size_t size_, size_t el_quantity)
 {
   int hits = 0;
   caches_lfu::CacheLFU<int> lfu{size_};
-  for (int curr = 0; curr < size_; ++curr) 
+  for (int curr = 0; curr < el_quantity; ++curr) 
   {
     int new_key;
     std::cin >> new_key;
     assert(std::cin.good());
 
     if (lfu.process_elem(new_key) == true)
-      hits++;
+      hits++;  
   }
   return hits;
 }
@@ -28,7 +28,7 @@ int main()
   assert(std::cin.good());
 
   caches_lfu::CacheLFU<int> lfu{cache_size};
-  hits = finding_hits(el_quantity);
+  hits = finding_hits(cache_size, el_quantity);
   std::cout << hits << std::endl;
 
   return 0;

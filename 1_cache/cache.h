@@ -53,7 +53,7 @@ namespace caches_lfu
         list_.erase(min_it_list);
       }
 
-      bool process_elem(KeyT key)
+      bool process_elem(KeyT key) 
       {
         if (cache_.count(key) != 0)
         {
@@ -62,10 +62,8 @@ namespace caches_lfu
         }
         if (cache_.size() == size_)
           delete_min_freq();
-         
         cache_.insert({key, 0});
         list_.push_front(key);
-
         return false;
       }
   };
