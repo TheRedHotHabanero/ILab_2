@@ -1,12 +1,14 @@
 #pragma once
 
 #include <iostream>
-#include <map>
+#include <unordered_map>
+#include <list>
 #include <iterator>
 #include <cassert>
 #include <limits>
 
-using std::map;
+using std::unordered_map;
+using std::list;
 using std::cin;
 using std::cout;
 using std::endl;
@@ -17,11 +19,13 @@ namespace caches_lfu
   {
     using KeyT  = int;
     using FreqT = unsigned long long;
-    using MapIt = typename map<KeyT, FreqT>::iterator;
+    using MapIt = typename unordered_map<KeyT, FreqT>::iterator;
+    using ListIt = typename list<KeyT>::iterator;
 
     private:
       size_t size_;
-      map<KeyT, FreqT> cache_;
+      unordered_map<KeyT, FreqT> cache_;
+      list<KeyT> list_;
       int hits_;
 
     public:
@@ -31,16 +35,24 @@ namespace caches_lfu
       {
         FreqT min_freq = std::numeric_limits<FreqT>::max();
         MapIt min_it = cache_.end();
+        ListIt min_it_list = list_.end();
 
         for (MapIt curr = cache_.begin(); curr != cache_.end(); ++curr)
         {
-          if (curr->second < min_freq)
+          if (curr->second < min_freq) // 
             {
               min_freq = curr->second;
               min_it = curr;
             }  
         }
+
+        for (ListIt curr_list = list_.begin(); curr_list != list_.end(); ++curr_list)
+        {
+          if (*curr_list == min_it->first)
+            min_it_list = curr_list;
+        }
         cache_.erase(min_it->first);
+        list_.erase(min_it_list);
       }
 
       bool put_new(KeyT key)
@@ -51,8 +63,7 @@ namespace caches_lfu
               delete_min_freq();
               
             cache_.insert({key, 0});
-            // if (cache_.size() > size_)
-            //   return false;  
+            list_.push_front(key);
           }
         else
           {
