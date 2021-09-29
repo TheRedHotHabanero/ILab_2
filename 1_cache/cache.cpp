@@ -1,12 +1,13 @@
 #include <cassert>
-
+#include <iostream>
 #include "cache.h"
 
-int finding_hits(size_t size_, size_t el_quantity)
+
+int finding_hits(size_t size, size_t el_quantity)
 {
   int hits = 0;
-  caches_lfu::CacheLFU<int> lfu{size_};
-  for (int curr = 0; curr < el_quantity; ++curr) 
+  caches_lfu::CacheLFU<int> lfu{size};
+  for (size_t curr = 0; curr < el_quantity; ++curr) 
   {
     int new_key;
     std::cin >> new_key;
@@ -27,7 +28,6 @@ int main()
   std::cin >> el_quantity;
   assert(std::cin.good());
 
-  caches_lfu::CacheLFU<int> lfu{cache_size};
   hits = finding_hits(cache_size, el_quantity);
   std::cout << hits << std::endl;
 

@@ -1,9 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include <unordered_map>
 #include <list>
-#include <iterator>
 #include <cassert>
 #include <limits>
 
@@ -12,9 +10,6 @@ namespace caches_lfu
 {
   using std::unordered_map;
   using std::list;
-  using std::cin;
-  using std::cout;
-  using std::endl;
 
   template <typename KeyT = int>
   class CacheLFU 
@@ -27,9 +22,6 @@ namespace caches_lfu
       size_t size_;
       unordered_map<KeyT, FreqT> cache_;
       list<KeyT> list_;
-
-    public:
-      CacheLFU(size_t size) : size_(size){}
 
       void delete_min_freq()
       {
@@ -53,7 +45,10 @@ namespace caches_lfu
         list_.erase(min_it_list);
       }
 
-      bool process_elem(KeyT key) 
+    public:
+      CacheLFU(size_t size) : size_(size){}
+
+      bool process_elem(const KeyT& key) 
       {
         if (cache_.count(key) != 0)
         {

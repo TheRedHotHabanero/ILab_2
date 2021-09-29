@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
-project(1_сache)
+project(CachePr)
 
-set(CMAKE_CXX_STANDARD 14)
-
-add_executable(1_cache "cache.cpp")
+add_executable(${PROJECT_NAME} "cache.cpp")
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
+target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra)
