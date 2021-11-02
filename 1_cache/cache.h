@@ -3,7 +3,6 @@
 #include <unordered_map>
 #include <list>
 #include <cassert>
-#include <limits>
 
 namespace LFU
 {
@@ -30,7 +29,7 @@ namespace LFU
   {
     int hits_;
     list<NodeElem<KeyT>> NodeList;
-    FreqElem(int hits): NodeList(), hits_(hits) {}
+    FreqElem(int hits): hits_(hits), NodeList() {}
   };
 
   template <typename KeyT>
@@ -90,7 +89,7 @@ namespace LFU
         freq_list_.front().NodeList.push_front(NodeElem<KeyT>(value, freq_list_.begin()));
       }
 
-      void delete_min_freq(void)
+      void delete_min_freq()
       {
         hash_table_.erase(freq_list_.front().NodeList.front().value_);
         freq_list_.front().NodeList.pop_front();
@@ -104,12 +103,12 @@ namespace LFU
 
       bool process_elem(const KeyT &value)
       {
-        KeyT value_hash     = Hash(value);
-        auto value_list_it  = hash_table_.find(value_hash);
+        KeyT key_hash     = Hash(value);
+        auto key_list_it  = hash_table_.find(key_hash);
 
-        if (value_list_it != hash_table_.end())
+        if (key_list_it != hash_table_.end())
         {
-          funding_hits(value_list_it->second);
+          funding_hits(key_list_it->second);
           return true;
         }
         adding_value(value);
