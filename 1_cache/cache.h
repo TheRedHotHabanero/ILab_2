@@ -44,14 +44,11 @@ namespace LFU
       HashTable             hash_table_;
       list<FreqElem<KeyT>>  freq_list_;
 
-      KeyT Hash(KeyT value) const
-      { return value; }
-
       void funding_hits(NodeIt new_node_it)
       {
         FreqIt<KeyT> node_head(new_node_it->head_);
         FreqIt<KeyT> node_head_p(++node_head);
-        --node_head;
+        node_head--;
 
         if (node_head_p != freq_list_.end() && node_head->hits_ + 1 == node_head_p->hits_)
         {
@@ -103,9 +100,7 @@ namespace LFU
 
       bool process_elem(const KeyT &value)
       {
-        KeyT key_hash     = Hash(value);
-        auto key_list_it  = hash_table_.find(key_hash);
-
+        auto key_list_it  = hash_table_.find(value);
         if (key_list_it != hash_table_.end())
         {
           funding_hits(key_list_it->second);
