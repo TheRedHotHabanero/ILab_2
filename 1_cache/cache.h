@@ -5,8 +5,8 @@
 
 namespace LFU
 {
-  using std::unordered_map;
   using std::list;
+  using std::unordered_map;
 
   template <typename KeyT>
   struct FreqElem;
@@ -43,7 +43,7 @@ namespace LFU
       HashTable             hash_table_;
       list<FreqElem<KeyT>>  freq_list_;
 
-      void adding_freq(KeyT key)
+      void adding_freq(const KeyT &key)
       {
         if (freq_list_.empty() || freq_list_.front().hits_ != 0)
           freq_list_.push_front(FreqElem<KeyT>(0));
@@ -59,7 +59,7 @@ namespace LFU
           freq_list_.pop_front();
       }
 
-      void adding_key(KeyT key)
+      void adding_key(const KeyT &key)
       {
         if (hash_table_.size() >= size_)
           delete_min_freq();
@@ -67,19 +67,18 @@ namespace LFU
         hash_table_[key] = freq_list_.front().node_list_.begin();
       }
 
-      void tying_node(NodeIt &node, FreqIt<KeyT> &current, FreqIt<KeyT> &destination)
+      void tying_node(const NodeIt &node, FreqIt<KeyT> &current, const FreqIt<KeyT> &destination)
       {
-        hash_table_.erase(node->key_);
         hash_table_[node->key_] = destination->node_list_.begin();
         current->node_list_.erase(node);
         if (current->node_list_.empty())
           freq_list_.erase(current);
       }
 
-      void funding_hits(NodeIt new_node_it)
+      void request(NodeIt new_node_it)
       {
-        FreqIt<KeyT> node_head(new_node_it->head_);
-        FreqIt<KeyT> node_head_p(++node_head);
+        FreqIt<KeyT> node_head{new_node_it->head_};
+        FreqIt<KeyT> node_head_p{++node_head};
         node_head--;
 
         if (node_head_p != freq_list_.end() && (node_head->hits_ + 1) == node_head_p->hits_)
@@ -102,7 +101,7 @@ namespace LFU
         auto key_list_it  = hash_table_.find(key);
         if (key_list_it != hash_table_.end())
         {
-          funding_hits(key_list_it->second);
+          request(key_list_it->second);
           return true;
         }
         adding_key(key);
