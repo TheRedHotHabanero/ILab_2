@@ -78,8 +78,7 @@ namespace LFU
       void request(NodeIt new_node_it)
       {
         FreqIt<KeyT> node_head{new_node_it->head_};
-        FreqIt<KeyT> node_head_p{++node_head};
-        node_head--;
+        FreqIt<KeyT> node_head_p{std::next(node_head)};
 
         if (node_head_p != freq_list_.end() && (node_head->hits_ + 1) == node_head_p->hits_)
         {
