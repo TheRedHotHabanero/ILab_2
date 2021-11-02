@@ -2,11 +2,10 @@
 #include <iostream>
 #include "cache.h"
 
-
 int finding_hits(size_t size, size_t el_quantity)
 {
   int hits = 0;
-  caches_lfu::CacheLFU<int> lfu{size};
+  caches_lfu::LFUCache<int> lfu{size};
   for (size_t curr = 0; curr < el_quantity; ++curr) 
   {
     int new_key;
