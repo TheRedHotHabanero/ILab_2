@@ -107,4 +107,4 @@ namespace LFU
         return false;
       }
   };  // class LFUCache
-};    //namespace LFU
+};    // namespace LFU
